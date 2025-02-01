@@ -22,10 +22,12 @@ namespace Application.Services.Service
         public async void Start( )
         {
             using HttpClient client = new HttpClient();
+
             string test2 = _configuration["TseTmcInitUrl"].ToString();
             HttpResponseMessage response = await client.GetAsync(test2);
+            var result = await response.Content.ReadAsStringAsync();
+                
             var test = GeneralHelper.DeSerializeSymbols(response.ToString());
-            throw new NotImplementedException();
         }
     }
 }
