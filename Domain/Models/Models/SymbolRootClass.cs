@@ -8,6 +8,22 @@ namespace Domain.Models.Models
 {
     public class SymbolRootClass
     {
+        public List<Marketwatch> marketwatch { get; set; }
+
+        public class BlD
+        {
+            public int n { get; set; }
+            public int qmd { get; set; }
+            public int zmd { get; set; }
+            public double pmd { get; set; }
+            public double pmo { get; set; }
+            public int zmo { get; set; }
+            public int qmo { get; set; }
+            public object rid { get; set; }
+        }
+
+        public class Marketwatch
+        {
             public string lva { get; set; }
             public string lvc { get; set; }
             public double eps { get; set; }
@@ -44,18 +60,11 @@ namespace Domain.Models.Models
             public double zTotTran { get; set; }
             public double qTotTran5J { get; set; }
             public double qTotCap { get; set; }
-
-        public class BlD
-        {
-            public int n { get; set; }
-            public int qmd { get; set; }
-            public int zmd { get; set; }
-            public double pmd { get; set; }
-            public double pmo { get; set; }
-            public int zmo { get; set; }
-            public int qmo { get; set; }
-            public object rid { get; set; }
         }
+
+    
+      
+
 
     }
 }

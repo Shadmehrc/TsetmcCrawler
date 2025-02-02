@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Application.Services.Service
 {
-    public class CrawlerService :  ICrawlerService
+    public class CrawlerService : ICrawlerService
     {
         private readonly IConfiguration _configuration;
 
@@ -19,15 +19,38 @@ namespace Application.Services.Service
         {
             _configuration = configuration;
         }
-        public async void Start( )
+        public async void Start()
         {
             using HttpClient client = new HttpClient();
 
-            string test2 = _configuration["TseTmcInitUrl"].ToString();
-            HttpResponseMessage response = await client.GetAsync(test2);
-            var result = await response.Content.ReadAsStringAsync();
-                
-            var test = GeneralHelper.DeSerializeSymbols(response.ToString());
+            string TseTmcInitUrl = _configuration["TseTmcInitUrl"].ToString();
+
+
+            //Send to db maybe
+            //Send init symbols
+
+            List<Symbol> fixList = new List<Symbol>();
+            List<Symbol> differencelList = new List<Symbol>();
+
+            HttpResponseMessage response = await client.GetAsync(TseTmcInitUrl);
+            string serializedSymbols = await response.Content.ReadAsStringAsync();
+            fixList = GeneralHelper.DeSerializeSymbols(serializedSymbols);
+
+            while (true)
+            {
+
+
+                //Get symbols again
+
+                //validate diffrence
+
+                //Send to db maybe
+
+                //SignalR
+
+                Task.Delay(1000);
+            }
+
         }
     }
 }

@@ -13,15 +13,15 @@ namespace Domain.Models.Models
         public string EPS { get; set; }
         public string PE { get; set; }
         public string SymbolISIN { get; set; }
-        public double FirstTradedPrice { get; set; }
-        public double lastTradedPrice { get; set; }
-        public double ClosingPrice { get; set; }
-        public double HighPrice { get; set; }
-        public double LowPrice { get; set; }
-        public double Volume { get; set; }
-        public double Value { get; set; }
-        public double Quantity { get; set; }
-        public double YesterdayClosingPrice { get; set; }
+        public string FirstTradedPrice { get; set; }
+        public string lastTradedPrice { get; set; }
+        public string ClosingPrice { get; set; }
+        public string HighPrice { get; set; }
+        public string LowPrice { get; set; }
+        public string Volume { get; set; }
+        public string Value { get; set; }
+        public string Quantity { get; set; }
+        public string YesterdayClosingPrice { get; set; }
         public string InsCode { get; set; }
     }
 }
