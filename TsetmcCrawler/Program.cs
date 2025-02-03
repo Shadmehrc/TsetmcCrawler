@@ -1,5 +1,8 @@
 ﻿using Application.Services.Service;
 using Application.Services.ServiceInterface;
+using Domain.Models.Models;
+using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +14,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICrawlerService, CrawlerService>();
 builder.Services.AddScoped<ISignalRHub, SignalRHub>();
 builder.Services.AddSignalR();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseInMemoryDatabase("InMemoryDb"));
 
-
-builder.Services.AddScoped<CrawlerService>();
 
 var app = builder.Build();
 
@@ -32,6 +35,21 @@ app.MapHub<SignalRHub>("/SignalRHub");
 //    var crawlerService = scope.ServiceProvider.GetRequiredService<CrawlerService>();
 //    Task.Run(() => crawlerService.Start());
 //}
+
+
+app.MapGet("/", async (ApplicationDbContext db) =>
+{
+    // ذخیره یک مقدار تستی
+    db.Symbols.Add(new Symbol { CompanyTitle = "Laptop", ClosingPrice = "1200" });
+    await db.SaveChangesAsync();
+
+    // واکشی داده‌ها
+    var products = await db.Symbols.ToListAsync();
+    return Results.Ok(products);
+});
+
+
+
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
