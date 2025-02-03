@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
+
 namespace Application.Services.Service
 {
     public class CrawlerService : ICrawlerService
@@ -19,6 +20,8 @@ namespace Application.Services.Service
         {
             _configuration = configuration;
         }
+
+
         public async void Start()
         {
             using HttpClient client = new HttpClient();
@@ -30,7 +33,9 @@ namespace Application.Services.Service
             //Send init symbols
 
             List<Symbol> fixList = new List<Symbol>();
-            List<Symbol> differencelList = new List<Symbol>();
+            List<Symbol> fixListTemp = new List<Symbol>();
+
+
 
             HttpResponseMessage response = await client.GetAsync(TseTmcInitUrl);
             string serializedSymbols = await response.Content.ReadAsStringAsync();
@@ -38,19 +43,43 @@ namespace Application.Services.Service
 
             while (true)
             {
-
-
                 //Get symbols again
+                HttpResponseMessage responseTemp = await client.GetAsync(TseTmcInitUrl);
+                string serializedSymbolstTemp = await response.Content.ReadAsStringAsync();
+                fixListTemp = GeneralHelper.DeSerializeSymbols(serializedSymbols);
+
 
                 //validate diffrence
+                List<Symbol> differencelList = FindDifference(fixList, fixListTemp);
 
                 //Send to db maybe
+                fixList = fixListTemp;
+
 
                 //SignalR
 
-                Task.Delay(1000);
             }
 
+        }
+        public List<Symbol> FindDifference(List<Symbol> oldList, List<Symbol> newList)
+        {
+            List<Symbol> differencelList = new List<Symbol>();
+
+            foreach (var item in oldList)
+            {
+                var newItem = newList.FirstOrDefault(x => x.InsCode == item.InsCode);
+                if (item.Value != newItem.Value)
+                {
+                    //todo maybe i can just add the changed item property and a flag
+                    differencelList.Add(newItem);
+                }
+            }
+            return differencelList;
+        }
+
+        public void SendSymbols(List<Symbol> symbols)
+        {
+            throw new NotImplementedException();
         }
     }
 }
