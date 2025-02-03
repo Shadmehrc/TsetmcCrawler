@@ -1,4 +1,4 @@
-using Application.Services.Service;
+﻿using Application.Services.Service;
 using Application.Services.ServiceInterface;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,10 +6,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICrawlerService, CrawlerService>();
+builder.Services.AddScoped<ISignalRHub, SignalRHub>();
+builder.Services.AddSignalR();
+
+
+builder.Services.AddScoped<CrawlerService>();
 
 var app = builder.Build();
 
@@ -20,10 +24,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapHub<SignalRHub>("/SignalRHub");
+
+//todo take it to another folder for BackGroundTasks
+//using (var scope = app.Services.CreateScope()) // ایجاد یک Scope جدید
+//{
+//    var crawlerService = scope.ServiceProvider.GetRequiredService<CrawlerService>();
+//    Task.Run(() => crawlerService.Start());
+//}
+
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

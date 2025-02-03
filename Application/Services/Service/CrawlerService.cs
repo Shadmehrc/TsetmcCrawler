@@ -48,7 +48,7 @@ namespace Application.Services.Service
                 string serializedSymbolstTemp = await response.Content.ReadAsStringAsync();
                 fixListTemp = GeneralHelper.DeSerializeSymbols(serializedSymbols);
 
-
+               // var temp = fixListTemp.FirstOrDefault(x => x.CompanyTitle == "عيار");
                 //validate diffrence
                 List<Symbol> differencelList = FindDifference(fixList, fixListTemp);
 
