@@ -9,6 +9,6 @@ namespace Application.Services.ServiceInterface
 {
     public interface ICrawlerService
     {
-        public void Start();
+        public Task<bool> Start();
     }
 }

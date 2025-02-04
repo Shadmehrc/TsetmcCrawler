@@ -14,16 +14,20 @@ namespace Infrastructure.DAL.RepositoryService
 {
     public class TsetmcCrawlerDAL : ITsetmcCrawlerDAL
     {
+
         private readonly ApplicationDbContext _context;
 
         public TsetmcCrawlerDAL(ApplicationDbContext context)
         {
+            Console.WriteLine($"DbContext Created - HashCode: {context.GetHashCode()}");
             _context = context;
         }
+
         public async Task<bool> SaveData(List<Symbol> symbols)
         {
             try
             {
+                Console.WriteLine($"Using DbContext - HashCode: {_context.GetHashCode()}");
                 _context.AddRange(symbols);
                 await _context.SaveChangesAsync();
 

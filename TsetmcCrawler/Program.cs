@@ -5,11 +5,11 @@ using Infrastructure.DAL.RepositoryInterface;
 using Infrastructure.DAL.RepositoryService;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
 builder.Services.AddSignalR();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -22,9 +22,12 @@ builder.Services.AddScoped<ITsetmcCrawlerDAL, TsetmcCrawlerDAL>();
 builder.Services.AddScoped<ISignalRHub, SignalRHub>();
 
 //Add DB Service
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseInMemoryDatabase("InMemoryDb"));
 
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseInMemoryDatabase("MyInMemoryDb"));
+
+builder.Services.AddControllers();
 
 
 var app = builder.Build();

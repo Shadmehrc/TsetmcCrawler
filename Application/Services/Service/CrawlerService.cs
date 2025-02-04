@@ -26,15 +26,13 @@ namespace Application.Services.Service
         }
 
 
-        public async void Start()
+        public async Task<bool> Start()
         {
             using HttpClient client = new HttpClient();
 
             string TseTmcInitUrl = _configuration["TseTmcInitUrl"].ToString();
             List<Symbol> fixList = new List<Symbol>();
             List<Symbol> fixListTemp = new List<Symbol>();
-
-
 
             HttpResponseMessage response = await client.GetAsync(TseTmcInitUrl);
             string serializedSymbols = await response.Content.ReadAsStringAsync();
@@ -52,15 +50,17 @@ namespace Application.Services.Service
                 List<Symbol> differencelList = FindDifference(fixList, fixListTemp);
                 fixList = fixListTemp;
 
-                //Save to DB
-                _context.SaveData(fixList);
+                //TODO /Fix Dispose problem and test    
+                //Save to DB 
+                 await _context.SaveData(fixList);
 
 
-                Task.Delay(3000000);
+                await Task.Delay(300000);
+
                 //SignalR
 
             }
-
+            return true;
         }
         public List<Symbol> FindDifference(List<Symbol> oldList, List<Symbol> newList)
         {

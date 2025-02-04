@@ -25,7 +25,7 @@ namespace TsetmcCrawler.Controllers
         [Route("Start")]
         public ActionResult<bool> Start()
         {
-            _crawlerService.Start();
+           var result= _crawlerService.Start();
             return true;
         }
     }
