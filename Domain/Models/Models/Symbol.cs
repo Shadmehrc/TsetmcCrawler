@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,8 @@ namespace Domain.Models.Models
 {
     public class Symbol
     {
+        [Key]
+        public string InsCode { get; set; }
         public string SymbolTitle { get; set; }
         public string CompanyTitle { get; set; }
         public string EPS { get; set; }
@@ -22,6 +25,6 @@ namespace Domain.Models.Models
         public string Value { get; set; }
         public string Quantity { get; set; }
         public string YesterdayClosingPrice { get; set; }
-        public string InsCode { get; set; }
+
     }
 }

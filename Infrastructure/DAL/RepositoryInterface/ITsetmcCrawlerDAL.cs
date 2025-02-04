@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Models.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Infrastructure.DAL.RepositoryInterface
 {
     public interface ITsetmcCrawlerDAL
     {
-        public void SaveData(string data);
+        public Task<bool> SaveData(List<Symbol> symbols);
     }
 }

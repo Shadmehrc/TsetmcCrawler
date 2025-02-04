@@ -1,21 +1,30 @@
 ﻿using Application.Services.Service;
 using Application.Services.ServiceInterface;
 using Domain.Models.Models;
+using Infrastructure.DAL.RepositoryInterface;
+using Infrastructure.DAL.RepositoryService;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+
+//Dependency Injection
 builder.Services.AddScoped<ICrawlerService, CrawlerService>();
+builder.Services.AddScoped<ITsetmcCrawlerDAL, TsetmcCrawlerDAL>();
 builder.Services.AddScoped<ISignalRHub, SignalRHub>();
-builder.Services.AddSignalR();
+
+//Add DB Service
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseInMemoryDatabase("InMemoryDb"));
+
 
 
 var app = builder.Build();
@@ -29,25 +38,13 @@ if (app.Environment.IsDevelopment())
 
 app.MapHub<SignalRHub>("/SignalRHub");
 
+
 //todo take it to another folder for BackGroundTasks
 //using (var scope = app.Services.CreateScope()) // ایجاد یک Scope جدید
 //{
 //    var crawlerService = scope.ServiceProvider.GetRequiredService<CrawlerService>();
 //    Task.Run(() => crawlerService.Start());
 //}
-
-
-app.MapGet("/", async (ApplicationDbContext db) =>
-{
-    // ذخیره یک مقدار تستی
-    db.Symbols.Add(new Symbol { CompanyTitle = "Laptop", ClosingPrice = "1200" });
-    await db.SaveChangesAsync();
-
-    // واکشی داده‌ها
-    var products = await db.Symbols.ToListAsync();
-    return Results.Ok(products);
-});
-
 
 
 

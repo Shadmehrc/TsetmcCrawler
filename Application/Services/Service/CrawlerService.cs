@@ -7,7 +7,9 @@ using Application.Services.ServiceInterface;
 using Domain.Models.Models;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Infrastructure.DAL.RepositoryInterface;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Application.Services.Service
@@ -15,10 +17,12 @@ namespace Application.Services.Service
     public class CrawlerService : ICrawlerService
     {
         private readonly IConfiguration _configuration;
+        private readonly ITsetmcCrawlerDAL _context;
 
-        public CrawlerService(IConfiguration configuration)
+        public CrawlerService(IConfiguration configuration, ITsetmcCrawlerDAL context)
         {
             _configuration = configuration;
+            _context = context;
         }
 
 
@@ -27,11 +31,6 @@ namespace Application.Services.Service
             using HttpClient client = new HttpClient();
 
             string TseTmcInitUrl = _configuration["TseTmcInitUrl"].ToString();
-
-
-            //Send to db maybe
-            //Send init symbols
-
             List<Symbol> fixList = new List<Symbol>();
             List<Symbol> fixListTemp = new List<Symbol>();
 
@@ -45,17 +44,19 @@ namespace Application.Services.Service
             {
                 //Get symbols again
                 HttpResponseMessage responseTemp = await client.GetAsync(TseTmcInitUrl);
-                string serializedSymbolstTemp = await response.Content.ReadAsStringAsync();
-                fixListTemp = GeneralHelper.DeSerializeSymbols(serializedSymbols);
+                string serializedSymbolsTemp = await responseTemp.Content.ReadAsStringAsync();
+                fixListTemp = GeneralHelper.DeSerializeSymbols(serializedSymbolsTemp);
 
-               // var temp = fixListTemp.FirstOrDefault(x => x.CompanyTitle == "عيار");
+
                 //validate diffrence
                 List<Symbol> differencelList = FindDifference(fixList, fixListTemp);
-
-                //Send to db maybe
                 fixList = fixListTemp;
 
+                //Save to DB
+                _context.SaveData(fixList);
 
+
+                Task.Delay(3000000);
                 //SignalR
 
             }
@@ -68,7 +69,11 @@ namespace Application.Services.Service
             foreach (var item in oldList)
             {
                 var newItem = newList.FirstOrDefault(x => x.InsCode == item.InsCode);
-                if (item.Value != newItem.Value)
+                //if (item.SymbolTitle == "وسپهر")
+                //{
+                //    ;
+                //}
+                if (item.lastTradedPrice != newItem.lastTradedPrice)
                 {
                     //todo maybe i can just add the changed item property and a flag
                     differencelList.Add(newItem);

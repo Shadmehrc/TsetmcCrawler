@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsetmcCrawler", "TsetmcCrawler\TsetmcCrawler.csproj", "{76439DE9-09F5-471D-82A7-50B8B86C23B5}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -26,7 +26,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{0DFD87B4-D77E-453D-8E6F-ABBBAB48FCE8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5D937FAF-9F4A-4AFF-A6AC-8916AA960E87} = {5D937FAF-9F4A-4AFF-A6AC-8916AA960E87}
-		{5F394E76-B3C8-4132-BEA1-D71E91C362E2} = {5F394E76-B3C8-4132-BEA1-D71E91C362E2}
 	EndProjectSection
 EndProject
 Global
