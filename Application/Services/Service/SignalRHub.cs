@@ -6,20 +6,42 @@ using System.Threading.Tasks;
 using Application.Services.ServiceInterface;
 using Domain.Models.Models;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Services.Service
 {
-    public class SignalRHub : Hub ,ISignalRHub 
+    public class SignalRHub : Hub, ISignalRHub
     {
+
+        private readonly IHubContext<SignalRHub> _hubContext;
+
+        public SignalRHub(IHubContext<SignalRHub> hubContext) // ✅ Use IHubContext
+        {
+            _hubContext = hubContext;
+        }
+
         public async Task SendMessage(string message)
         {
             await Clients.All.SendAsync("ReceiveMessage", message);
         }
 
-        // Method to send a list of data to all connected clients
-        public async Task SendData(List<Symbol> data)
+        public async Task SendData(string data)
         {
-            await Clients.All.SendAsync("ReceiveData", data);
+            try
+            {
+                await _hubContext.Clients.All.SendAsync("ReceiveData", data);
+            }
+            catch (Exception ex)
+            {
+            }
         }
+
+        public override async Task OnConnectedAsync()
+        {
+            await base.OnConnectedAsync();
+        }
+
+
     }
+
 }

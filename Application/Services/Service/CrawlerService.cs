@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Infrastructure.DAL.RepositoryInterface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 
 namespace Application.Services.Service
@@ -18,11 +19,13 @@ namespace Application.Services.Service
     {
         private readonly IConfiguration _configuration;
         private readonly ITsetmcCrawlerDAL _context;
+        private readonly ISignalRHub _hub;
 
-        public CrawlerService(IConfiguration configuration, ITsetmcCrawlerDAL context)
+        public CrawlerService(IConfiguration configuration, ITsetmcCrawlerDAL context, ISignalRHub hub)
         {
             _configuration = configuration;
             _context = context;
+            _hub = hub;
         }
 
 
@@ -52,13 +55,15 @@ namespace Application.Services.Service
 
                 //TODO /Fix Dispose problem and test    
                 //Save to DB 
-                 await _context.SaveData(fixList);
+                // await _context.SaveData(fixList);
 
 
-                await Task.Delay(300000);
+                await Task.Delay(1000);
 
                 //SignalR
-
+                string serializedSymbolsHub=JsonConvert.SerializeObject(fixList);
+                await _hub.SendData(serializedSymbolsHub);
+                Console.WriteLine("1");
             }
             return true;
         }
@@ -77,6 +82,8 @@ namespace Application.Services.Service
                 {
                     //todo maybe i can just add the changed item property and a flag
                     differencelList.Add(newItem);
+                    Console.WriteLine("2");
+
                 }
             }
             return differencelList;

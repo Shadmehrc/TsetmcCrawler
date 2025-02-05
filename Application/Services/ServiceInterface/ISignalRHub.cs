@@ -13,7 +13,7 @@ namespace Application.Services.ServiceInterface
         public  Task SendMessage(string message);
 
 
-        public  Task SendData(List<Symbol> data);
+        public  Task SendData(string data);
 
     }
 }
