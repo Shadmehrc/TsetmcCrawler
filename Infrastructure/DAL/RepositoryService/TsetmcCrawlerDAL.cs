@@ -27,6 +27,16 @@ namespace Infrastructure.DAL.RepositoryService
         {
             try
             {
+
+                //var contextOptions = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase("MyInMemoryDb");
+                //using (var context = new ApplicationDbContext(contextOptions))
+                //{
+
+                //}
+
+
+
+
                 Console.WriteLine($"Using DbContext - HashCode: {_context.GetHashCode()}");
                 _context.AddRange(symbols);
                 await _context.SaveChangesAsync();

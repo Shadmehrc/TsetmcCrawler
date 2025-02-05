@@ -16,12 +16,14 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", policy =>
     {
-        policy.AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials() // Needed for WebSockets
-              .SetIsOriginAllowed(origin => true); // Allow all origins (change for production)
+        policy.WithOrigins("http://localhost:5173") 
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
     });
 });
+
+
 
 //Add In memory DB
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -38,6 +40,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+app.UseCors("CorsPolicy");
 //Add SignalR Hub
 app.MapHub<SignalRHub>("/SignalRHub");
 
