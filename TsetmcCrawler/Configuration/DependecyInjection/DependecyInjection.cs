@@ -12,6 +12,7 @@ namespace TsetmcCrawler.Configuration.DependecyInjection
             services.AddScoped<ICrawlerService, CrawlerService>();
             services.AddScoped<ITsetmcCrawlerDAL, TsetmcCrawlerDAL>();
             services.AddScoped<ISignalRHub, SignalRHub>();
+            services.AddScoped<IRabbitHub, RabbitHub>();
             return services;
         }
     }
