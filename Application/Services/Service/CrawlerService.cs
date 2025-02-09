@@ -19,13 +19,16 @@ namespace Application.Services.Service
     {
         private readonly IConfiguration _configuration;
         private readonly ITsetmcCrawlerDAL _context;
-        private readonly ISignalRHub _hub;
+        private readonly ISignalRHub _signalRHub;
+        private readonly IRabbitHub _rabbitHub;
 
-        public CrawlerService(IConfiguration configuration, ITsetmcCrawlerDAL context, ISignalRHub hub)
+
+        public CrawlerService(IConfiguration configuration, ITsetmcCrawlerDAL context, ISignalRHub signalrSignalRHub,IRabbitHub rabbitHub)
         {
             _configuration = configuration;
             _context = context;
-            _hub = hub;
+            _signalRHub = signalrSignalRHub;
+            _rabbitHub=rabbitHub;
         }
 
 
@@ -62,11 +65,19 @@ namespace Application.Services.Service
 
                 //SignalR
                 string serializedSymbolsHub=JsonConvert.SerializeObject(fixList);
-                await _hub.SendData(serializedSymbolsHub);
+                await _signalRHub.SendData(serializedSymbolsHub);
                 Console.WriteLine("1");
             }
             return true;
         }
+
+        public Task<bool> testMethod()
+        {
+            _rabbitHub.start();
+
+            throw new NotImplementedException();
+        }
+
         public List<Symbol> FindDifference(List<Symbol> oldList, List<Symbol> newList)
         {
             List<Symbol> differencelList = new List<Symbol>();

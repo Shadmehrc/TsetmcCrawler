@@ -28,5 +28,14 @@ namespace TsetmcCrawler.Controllers
            var result= _crawlerService.Start();
             return true;
         }
+
+        [HttpPost]
+        [Route("Test")]
+        public ActionResult<bool> Test()
+        {
+            var result = _crawlerService.testMethod();
+            return true;
+        }
+
     }
 }

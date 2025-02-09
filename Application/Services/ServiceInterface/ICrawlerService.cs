@@ -10,5 +10,7 @@ namespace Application.Services.ServiceInterface
     public interface ICrawlerService
     {
         public Task<bool> Start();
+        public Task<bool> testMethod();
     }
+
 }
