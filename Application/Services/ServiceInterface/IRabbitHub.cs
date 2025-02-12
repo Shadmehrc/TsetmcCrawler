@@ -8,6 +8,8 @@ namespace Application.Services.ServiceInterface
 {
     public interface IRabbitHub
     {
-        public void start();
+        public void SendMessage();
+        //public void ReceiveMessage();
+
     }
 }

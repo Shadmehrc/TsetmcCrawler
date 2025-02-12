@@ -73,9 +73,8 @@ namespace Application.Services.Service
 
         public Task<bool> testMethod()
         {
-            _rabbitHub.start();
-
-            throw new NotImplementedException();
+             _rabbitHub.SendMessage();
+             return null;
         }
 
         public List<Symbol> FindDifference(List<Symbol> oldList, List<Symbol> newList)

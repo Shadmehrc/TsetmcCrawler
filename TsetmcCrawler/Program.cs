@@ -31,7 +31,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddControllers();
 
+
+builder.Services.AddHostedService<RabbitMqConsumerService>();
+
 var app = builder.Build();
+
+app.MapGet("/", () => "RabbitMQ Consumer Service is Running!");
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
